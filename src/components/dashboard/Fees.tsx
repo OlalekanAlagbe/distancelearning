@@ -55,7 +55,7 @@ export function Fees() {
               </p>
             </div>
             <button className="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-200 shadow-sm hover:shadow-md flex items-center gap-2">
-              <DollarSign className="h-5 w-5" />
+              
               <span>Make Payment</span>
             </button>
           </div>
