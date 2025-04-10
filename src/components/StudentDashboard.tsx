@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { 
   User, Clock, BookOpen, Video, Calendar, FileText, CheckSquare, 
   BookMarked, PenTool, Download, UserCheck, Bell, Library, Building2,
-  MessageSquare, FileSpreadsheet
+  MessageSquare, FileSpreadsheet, Menu, X
 } from 'lucide-react';
 import { Profile } from './dashboard/Profile';
 import { Fees } from './dashboard/Fees';
@@ -27,6 +27,7 @@ type TabType = 'profile' | 'fees' | 'live-classes' | 'timetable' | 'syllabus' |
 
 export function StudentDashboard({ userName, userEmail }: StudentDashboardProps) {
   const [activeTab, setActiveTab] = useState<TabType>('profile');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const navigationItems = [
     { id: 'profile', label: 'My Profile', icon: User },
@@ -73,8 +74,23 @@ export function StudentDashboard({ userName, userEmail }: StudentDashboardProps)
 
   return (
     <div className="flex h-[calc(100vh-4rem)]">
+      {/* Mobile sidebar toggle */}
+      <div className="md:hidden fixed top-20 left-4 z-20">
+        <button
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className="p-2 rounded-md bg-white shadow-lg text-gray-600 hover:text-gray-900"
+        >
+          {isSidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        </button>
+      </div>
+
       {/* Sidebar Navigation */}
-      <div className="w-64 bg-white border-r border-gray-200 overflow-y-auto">
+      <div 
+        className={`fixed md:static inset-y-0 left-0 transform ${
+          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        } md:translate-x-0 transition duration-200 ease-in-out md:transition-none
+        w-64 bg-white border-r border-gray-200 overflow-y-auto z-10 pt-16 md:pt-0`}
+      >
         <div className="p-4">
           <div className="flex items-center space-x-3 mb-6">
             <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
@@ -89,7 +105,10 @@ export function StudentDashboard({ userName, userEmail }: StudentDashboardProps)
             {navigationItems.map((item) => (
               <button
                 key={item.id}
-                onClick={() => setActiveTab(item.id as TabType)}
+                onClick={() => {
+                  setActiveTab(item.id as TabType);
+                  setIsSidebarOpen(false);
+                }}
                 className={`w-full flex items-center px-3 py-2 text-sm font-medium rounded-md ${
                   activeTab === item.id
                     ? 'bg-indigo-50 text-indigo-600'
@@ -109,9 +128,17 @@ export function StudentDashboard({ userName, userEmail }: StudentDashboardProps)
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 overflow-y-auto bg-gray-50 p-6">
+      <div className="flex-1 overflow-y-auto bg-gray-50 p-4 md:p-6">
         {renderContent()}
       </div>
+
+      {/* Mobile sidebar backdrop */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-gray-600 bg-opacity-50 z-0 md:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
     </div>
   );
 }

@@ -65,7 +65,7 @@ export function ChatBot() {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-4 right-4 bg-indigo-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 transition-colors"
+        className="fixed bottom-4 right-4 bg-indigo-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 transition-colors z-50"
       >
         <MessageCircle className="h-6 w-6" />
       </button>
@@ -73,7 +73,11 @@ export function ChatBot() {
   }
 
   return (
-    <div className={`fixed bottom-4 right-4 bg-white rounded-lg shadow-xl w-96 ${isMinimized ? 'h-14' : 'h-[600px]'} transition-all duration-200`}>
+    <div 
+      className={`fixed bottom-4 right-4 bg-white rounded-lg shadow-xl transition-all duration-200 z-50
+        ${isMinimized ? 'h-14' : 'h-[600px] max-h-[80vh]'}
+        w-full max-w-[360px] sm:max-w-[400px] mx-4 sm:mx-0`}
+    >
       {/* Header */}
       <div className="bg-indigo-600 text-white p-4 rounded-t-lg flex justify-between items-center">
         <div className="flex items-center space-x-2">
@@ -112,7 +116,7 @@ export function ChatBot() {
                       : 'bg-indigo-600 text-white'
                   }`}
                 >
-                  <p className="text-sm">{msg.text}</p>
+                  <p className="text-sm break-words">{msg.text}</p>
                   <p className="text-xs mt-1 opacity-70">
                     {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </p>
@@ -130,7 +134,7 @@ export function ChatBot() {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Type your message..."
-                className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
               />
               <button
                 type="submit"

@@ -57,7 +57,7 @@ export function Profile({ userName, userEmail }: ProfileProps) {
                   <div>
                     <p className="text-sm text-gray-500">Address</p>
                     <p className="text-sm font-medium text-gray-900">
-                      123 Learning Street, Education City, ST 12345
+                    Universal School Of Aviation, 136 Isolo Road/Ikotun Rd, Lagos, Nigeria
                     </p>
                   </div>
                 </div>
