@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Login } from './components/Login';
+import { Signup } from './components/Signup';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { CourseCatalog } from './components/CourseCatalog';
@@ -100,6 +101,7 @@ function App() {
   const [showPrerequisiteCheck, setShowPrerequisiteCheck] = useState(false);
   const [showCourseDetail, setShowCourseDetail] = useState(false);
   const [showDashboard, setShowDashboard] = useState(false);
+  const [showSignup, setShowSignup] = useState(false);
 
   const handleLogin = (email: string, password: string) => {
     setAuthState({
@@ -112,6 +114,30 @@ function App() {
       }
     });
     setShowDashboard(true);
+  };
+
+  const handleSignup = (name: string, email: string, password: string) => {
+    setAuthState({
+      isAuthenticated: true,
+      user: {
+        id: '1',
+        name: name,
+        email: email,
+        enrolledCourses: []
+      }
+    });
+    setShowDashboard(true);
+  };
+
+  const handleLogout = () => {
+    setAuthState({
+      isAuthenticated: false,
+      user: null
+    });
+    setShowDashboard(false);
+    setSelectedCourse(null);
+    setShowPrerequisiteCheck(false);
+    setShowCourseDetail(false);
   };
 
   const handleCourseSelect = (course: Course) => {
@@ -137,7 +163,17 @@ function App() {
   };
 
   if (!authState.isAuthenticated) {
-    return <Login onLogin={handleLogin} />;
+    return showSignup ? (
+      <Signup 
+        onSignup={handleSignup}
+        onSwitchToLogin={() => setShowSignup(false)}
+      />
+    ) : (
+      <Login 
+        onLogin={handleLogin}
+        onSwitchToSignup={() => setShowSignup(true)}
+      />
+    );
   }
 
   return (
@@ -146,8 +182,10 @@ function App() {
         <>
           <Navbar 
             userName={authState.user.name} 
+            userEmail={authState.user.email}
             onDashboardClick={() => setShowDashboard(true)}
             onCoursesClick={() => setShowDashboard(false)}
+            onLogout={handleLogout}
           />
           <StudentDashboard
             userName={authState.user.name}
@@ -158,8 +196,10 @@ function App() {
         <>
           <Navbar 
             userName={authState.user?.name}
+            userEmail={authState.user?.email}
             onDashboardClick={() => setShowDashboard(true)}
             onCoursesClick={() => setShowDashboard(false)}
+            onLogout={handleLogout}
           />
           {showPrerequisiteCheck && selectedCourse && authState.user ? (
             <PrerequisiteCheck

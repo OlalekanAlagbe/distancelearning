@@ -27,7 +27,6 @@ export function Downloads() {
     },
     {
       id: 3,
-      id: 4,
       title: 'Database Systems Lab Manual',
       type: 'PDF',
       size: '3.2 MB',
